@@ -1,0 +1,121 @@
+
+anami@DESKTOP-CIBHCJN MINGW64 ~
+$ pwd
+/c/Users/anami
+
+anami@DESKTOP-CIBHCJN MINGW64 ~
+$ oc project
+Using project "anamikas" on server "https://api.ms-bootcamp-1623177050.asandbox.io:6443".
+
+anami@DESKTOP-CIBHCJN MINGW64 ~
+$ oc status
+In project anamikas on server https://api.ms-bootcamp-1623177050.azure.i
+
+You have no services, deployment configs, or build configs.
+Run 'oc new-app' to create an application.
+
+
+
+
+anami@DESKTOP-CIBHCJN MINGW64 ~
+$ cd bc-agenda-web
+
+anami@DESKTOP-CIBHCJN MINGW64 ~/bc-agenda-web
+$ ls
+Controllers/  Program.cs   Startup.cs  appsettings.Development.json  bc-
+Models/       Properties/  Views/      appsettings.json              obj
+
+anami@DESKTOP-CIBHCJN MINGW64 ~/bc-agenda-web
+$ pwd
+/c/Users/anami/bc-agenda-web
+
+anami@DESKTOP-CIBHCJN MINGW64 ~/bc-agenda-web
+
+$ dotnet restore -r rhel.8-x64
+  Determining projects to restore...
+  Restored C:\Users\anami\bc-agenda-web\bc-agenda-web.csproj (in 28.19 s
+
+anami@DESKTOP-CIBHCJN MINGW64 ~/bc-agenda-web
+$ dotnet publish -c Release -r rhel.8-x64 --self-contained false
+Microsoft (R) Build Engine version 16.9.0+57a23d249 for .NET
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Determining projects to restore...
+  Restored C:\Users\anami\bc-agenda-web\bc-agenda-web.csproj (in 126 ms)
+  bc-agenda-web -> C:\Users\anami\bc-agenda-web\bin\Release\netcoreapp3.-x64\bc-agenda-web.dll
+  bc-agenda-web -> C:\Users\anami\bc-agenda-web\bin\Release\netcoreapp3.-x64\bc-agenda-web.Views.dll
+  bc-agenda-web -> C:\Users\anami\bc-agenda-web\bin\Release\netcoreapp3.-x64\publish\
+
+
+anami@DESKTOP-CIBHCJN MINGW64 ~/bc-agenda-web
+$ oc new-build --name=bc-agenda-web openshift/dotnet:3.1 --binary=true  --> Found image c4ac8fd (5 weeks old) in image stream "openshift/dotnet"ag "3.1" for "openshift/dotnet:3.1"
+
+    .NET Core 3.1
+    -------------
+    Platform for building and running .NET Core 3.1 applications
+
+    Tags: builder, .net, dotnet, dotnetcore, rh-dotnet31
+
+    * A source build using binary input will be created
+      * The resulting image will be pushed to image stream tag "bc-agendtest"
+      * A binary build was created, use 'oc start-build --from-dir' to t new build
+
+--> Creating resources with label build=bc-agenda-web ...
+    imagestream.image.openshift.io "bc-agenda-web" created
+    buildconfig.build.openshift.io "bc-agenda-web" created
+--> Success
+
+anami@DESKTOP-CIBHCJN MINGW64 ~/bc-agenda-web
+$ oc start-build bc-agenda-web --from-dir=bin/Release/netcoreapp3.1/rhelublish
+Uploading directory "bin\\Release\\netcoreapp3.1\\rhel.8-x64\\publish" a input for the build ...
+.
+Uploading finished
+build.build.openshift.io/bc-agenda-web-1 started
+
+anami@DESKTOP-CIBHCJN MINGW64 ~/bc-agenda-web
+$ oc new-app $NAMESPACE/bc-agenda-web
+error:  local file access failed with: CreateFile C:/Program Files/Git/b-web: The system cannot find the file specified.
+error: unable to locate any images in image streams, templates loaded inble projects, template files, local docker images with name "C:/Program t/bc-agenda-web"
+
+Argument 'C:/Program Files/Git/bc-agenda-web' was classified as an imagesource, or loaded template reference.
+
+
+
+
+
+
+
+$ oc new-app bc-agenda-web
+--> Found image c79fcb2 (4 minutes old) in image stream "anamikas/bc-age under tag "latest" for "bc-agenda-web"
+
+    .NET Core 3.1
+    -------------
+    Platform for building and running .NET Core 3.1 applications
+
+    Tags: builder, .net, dotnet, dotnetcore, rh-dotnet31
+
+
+--> Creating resources ...
+    deployment.apps "bc-agenda-web" created
+    service "bc-agenda-web" created
+--> Success
+    Application is not exposed. You can expose services to the outside wexecuting one or more of the commands below:
+     'oc expose service/bc-agenda-web'
+    Run 'oc status' to view your app.
+
+anami@DESKTOP-CIBHCJN MINGW64 ~/bc-agenda-web
+$ oc status
+In project anamikas on server https://api.ms-bootcamp-1623177050.azure.ix.io:6443
+
+svc/bc-agenda-web - 172.30.115.128:8080
+  deployment/bc-agenda-web deploys istag/bc-agenda-web:latest <-
+    bc/bc-agenda-web source builds uploaded code on openshift/dotnet:3.1
+    deployment #2 running for 14 seconds - 1 pod
+    deployment #1 deployed 15 seconds ago
+
+
+1 info identified, use 'oc status --suggest' to see details.
+
+anami@DESKTOP-CIBHCJN MINGW64 ~/bc-agenda-web
+$
+
